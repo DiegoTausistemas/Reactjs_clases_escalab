@@ -1,26 +1,25 @@
-//Funciones de Helpers
 export const addItem = (item, next) => {
   let cart = [];
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
-      cart = JSON.parse(localStorage.get("cart"));
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
     cart.push({
       ...item,
       count: 1
     });
 
-    // Remover duplicados
-    // build an array from new set and turn it back into array using Array.from
-    // so later, we can re-map it
+    // remove duplicates
+    // build an Array from new Set and turn it back into array using Array.from
+    // so that later we can re-map it
     // new set will only allow unique values in it
     // so pass the ids of each object/product
-    // if the loop tries to add the same value again, it`ll get ignored
-    // ...whit the array the ids we got on when first map() was used
+    // If the loop tries to add the same value again, it'll get ignored
+    // ...with the array of ids we got on when first map() was used
     // run map() on it again and return the actual product from the cart
 
     cart = Array.from(new Set(cart.map(p => p._id))).map(id => {
-      return cart.find(p => p.id === id);
+      return cart.find(p => p._id === id);
     });
 
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -28,32 +27,29 @@ export const addItem = (item, next) => {
   }
 };
 
-
-export const itemTote = () => {
+export const itemTotal = () => {
   if (typeof window !== "undefined") {
-    if (localStorage.get("cart")) {
-      return JSON.stringify.parse(localStorage.getItem("cart")).length;
+    if (localStorage.getItem("cart")) {
+      return JSON.parse(localStorage.getItem("cart")).length;
     }
   }
   return 0;
 };
 
-
 export const getCart = () => {
   if (typeof window !== "undefined") {
-    if (localStorage.get("cart")) {
-      return JSON.stringify.parse(localStorage.getItem("cart"));
+    if (localStorage.getItem("cart")) {
+      return JSON.parse(localStorage.getItem("cart"));
     }
   }
   return [];
 };
 
-
 export const updateItem = (productId, count) => {
   let cart = [];
   if (typeof window !== "undefined") {
-    if (localStorage.get("cart")) {
-      return JSON.parse(localStorage.getItem("cart"));
+    if (localStorage.getItem("cart")) {
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
 
     cart.map((product, i) => {
@@ -62,16 +58,15 @@ export const updateItem = (productId, count) => {
       }
     });
 
-    localStorage.setItem("cart", JSON.stringify(cart))
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 };
 
-
-export const removeItem = (productId, count) => {
+export const removeItem = productId => {
   let cart = [];
   if (typeof window !== "undefined") {
-    if (localStorage.get("cart")) {
-      cart = JSON.parse(localStorage.get("cart"));
+    if (localStorage.getItem("cart")) {
+      cart = JSON.parse(localStorage.getItem("cart"));
     }
 
     cart.map((product, i) => {
@@ -82,14 +77,12 @@ export const removeItem = (productId, count) => {
 
     localStorage.setItem("cart", JSON.stringify(cart));
   }
-
   return cart;
 };
 
-
-export const emptyCart = () => {
+export const emptyCart = next => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("cart");
     next();
-  };
+  }
 };
